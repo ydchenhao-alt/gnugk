@@ -24,3 +24,7 @@ cov-int.tgz
 *.bin
 *.obj
 *.tlog
+
+# GunGK deploy: never commit real deployment values
+deploy/variables.env
+admin.pass
