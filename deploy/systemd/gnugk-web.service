@@ -1,0 +1,13 @@
+[Unit]
+Description=GunGK Web admin
+After=network.target gnugk.service
+
+[Service]
+Type=simple
+# drop-in conntrack-acct.conf（解决 LXC 启动时序）：
+# ExecStartPre=-/usr/sbin/sysctl -w net.netfilter.nf_conntrack_acct=1
+ExecStart=/usr/bin/python3 /opt/gnugk-web/webui.py
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target

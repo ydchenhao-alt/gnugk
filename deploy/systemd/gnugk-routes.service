@@ -1,0 +1,12 @@
+[Unit]
+Description=GunGK dual-NIC routes (public default, RFC1918 via internal)
+After=networking.service
+Before=gnugk.service
+
+[Service]
+Type=oneshot
+ExecStart=/usr/local/sbin/gnugk-routes.sh
+RemainAfterExit=yes
+
+[Install]
+WantedBy=multi-user.target

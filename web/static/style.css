@@ -1,0 +1,21 @@
+:root{--bg:#f4f6f8;--card:#fff;--ink:#1d2733;--muted:#667085;--line:#e2e8f0;--blue:#2563eb;--red:#dc2626;--green:#15803d;--amber:#b45309}
+*{box-sizing:border-box}body{margin:0;font-family:system-ui,-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;background:var(--bg);color:var(--ink)}
+a{color:var(--blue)}button{cursor:pointer;border:1px solid var(--line);background:#fff;border-radius:8px;padding:7px 12px}
+button.primary{background:var(--blue);color:#fff;border-color:var(--blue)}button.danger{color:var(--red)}button:disabled{opacity:.5}
+input,select,textarea{border:1px solid var(--line);border-radius:8px;padding:8px 10px;width:100%}
+.layout{display:flex;min-height:100vh}.side{width:210px;background:#0f172a;color:#e2e8f0;padding:18px 12px;position:sticky;top:0;height:100vh}
+.side h1{font-size:18px;margin:0 0 4px}.side p{color:#94a3b8;font-size:12px;margin:0 0 18px}
+.side button{display:block;width:100%;text-align:left;background:transparent;color:#e2e8f0;border:0;padding:10px 12px;border-radius:8px;margin-bottom:4px}
+.side button.on{background:#1e293b;color:#fff}
+.main{flex:1;padding:24px;max-width:1100px}.top{display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-bottom:16px}
+.pill{padding:4px 10px;border-radius:999px;font-size:12px;background:#e2e8f0}.pill.ok{background:#dcfce7;color:var(--green)}.pill.bad{background:#fee2e2;color:var(--red)}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px;margin-bottom:16px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px}.card b{font-size:26px;display:block}
+.card span{color:var(--muted);font-size:13px}table{width:100%;border-collapse:collapse;font-size:14px}
+th,td{border-bottom:1px solid var(--line);padding:9px 8px;text-align:left;vertical-align:top}th{color:var(--muted);font-size:12px}
+.mono{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:12px;white-space:pre-wrap;word-break:break-all}
+.muted{color:var(--muted);font-size:13px}.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin:10px 0}
+.field{margin-bottom:12px}.field label{font-size:13px;color:var(--muted);display:block;margin-bottom:4px}
+.field small{color:var(--muted)}#login{max-width:380px;margin:12vh auto;background:#fff;border:1px solid var(--line);border-radius:14px;padding:28px}
+#toast{position:fixed;right:20px;bottom:20px;background:#0f172a;color:#fff;padding:12px 16px;border-radius:10px;display:none;max-width:420px}
+@media(max-width:760px){.layout{flex-direction:column}.side{width:100%;height:auto;position:static}}

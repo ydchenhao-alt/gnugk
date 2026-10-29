@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>GunGK 网闸管理台</title><link rel="stylesheet" href="/style.css"></head>
+<body>
+<div id="login" style="display:none">
+  <h2>GunGK 网闸管理台</h2>
+  <p class="muted">仅限内网访问。浏览器访问内网地址时请绕过本地代理。</p>
+  <div class="field"><label>管理口令</label><input id="pw" type="password" autocomplete="current-password"></div>
+  <button class="primary" id="loginBtn">登录</button>
+  <p id="loginErr" class="muted"></p>
+</div>
+<div id="app" class="layout" style="display:none">
+  <nav class="side"><h1>GunGK 管理台</h1><p>GnuGk 网闸 · 状态口 7000</p>
+    <button data-page="dash" class="on">仪表盘</button>
+    <button data-page="eps">终端管理</button>
+    <button data-page="calls">通话管理</button>
+    <button data-page="net">网络</button>
+    <button data-page="fw">端口与防火墙</button>
+    <button data-page="cfg">功能设置</button>
+    <button data-page="sys">系统</button>
+    <button id="logoutBtn">退出登录</button>
+  </nav>
+  <main class="main">
+    <div class="top"><h2 id="pageTitle" style="margin:0">仪表盘</h2>
+      <span id="gkPill" class="pill">网闸状态：未知</span>
+      <span id="sampled" class="muted"></span>
+      <button id="refreshBtn">刷新</button>
+    </div>
+    <section id="page-dash">
+      <div class="grid">
+        <div class="card"><b id="cEps">–</b><span>已注册终端</span></div>
+        <div class="card"><b id="cCalls">–</b><span>当前通话</span></div>
+        <div class="card"><b id="cTerm">–</b><span>终端 / 网关（统计口）</span></div>
+      </div>
+      <div class="card"><h3 style="margin-top:0">当前通话</h3><div id="dashCalls" class="muted">加载中…</div></div>
+      <p class="muted" id="ratesNote"></p>
+    </section>
+    <section id="page-eps" style="display:none">
+      <div class="row"><input id="epSearch" placeholder="按别名 / IP 搜索" style="max-width:320px"><button id="unregAllBtn" class="danger">注销全部（二次确认）</button></div>
+      <div class="card"><div id="epTable">加载中…</div></div>
+    </section>
+    <section id="page-calls" style="display:none">
+      <div class="row"><button id="discAllBtn" class="danger">断开全部通话（二次确认）</button></div>
+      <div class="card"><div id="callTable">加载中…</div></div>
+    </section>
+    <section id="page-net" style="display:none">
+      <div class="card"><h3 style="margin-top:0">接口地址</h3><pre id="netAddr" class="mono"></pre>
+      <h3>路由表</h3><pre id="netRoute" class="mono"></pre>
+      <p class="muted">只读展示。改地址/路由请走部署变量文件重新渲染后应用（路由先于 gnugk 生效），改管理网段前请保留当前 SSH 逃生通道。</p></div>
+    </section>
+    <section id="page-fw" style="display:none">
+      <div class="card"><h3 style="margin-top:0">端口表</h3><div id="fwTable"></div>
+      <h3>nftables 规则集（只读）</h3><pre id="fwRules" class="mono"></pre>
+      <p class="muted">容器无 NET_ADMIN 时，同等 ACL 应落到宿主/上级防火墙，不要在容器内静默失败。</p></div>
+    </section>
+    <section id="page-cfg" style="display:none">
+      <div class="card"><div id="cfgForm">加载中…</div>
+      <div class="row"><button class="primary" id="saveCfgBtn">保存并重载（备份旧配置）</button><button id="reloadBtn">仅重载配置</button></div>
+      <p class="muted">reload 只对新呼叫生效，不影响进行中通话。AllowSignaledIPs 只列真正可达的固定 IP，不要填全部私网段。</p></div>
+    </section>
+    <section id="page-sys" style="display:none">
+      <div class="card"><h3 style="margin-top:0">服务状态</h3><div id="svcTable"></div>
+      <div class="row"><button id="restartGkBtn">重启 gnugk</button><button id="restartWebBtn">重启管理台</button></div>
+      <h3>改密</h3><div class="field"><label>当前口令</label><input id="oldPw" type="password"></div>
+      <div class="field"><label>新口令（至少 8 位）</label><input id="newPw" type="password"></div>
+      <div class="field"><label>再次输入新口令</label><input id="newPw2" type="password"></div>
+      <button class="primary" id="changePwBtn">更换口令</button>
+      <h3>操作日志</h3><pre id="actLog" class="mono"></pre>
+      <h3>网闸日志（尾部）</h3><pre id="gkLog" class="mono"></pre></div>
+    </section>
+  </main>
+</div>
+<div id="toast"></div>
+<script src="/app.js"></script>
+</body></html>

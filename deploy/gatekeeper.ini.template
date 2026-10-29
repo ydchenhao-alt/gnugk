@@ -1,0 +1,33 @@
+# 由 deploy/variables.env 渲染生成，勿直接提交真实值版本。
+# 占位符在渲染时替换；未列出的段沿用上游 etc/ 样例默认值。
+
+[Gatekeeper::Main]
+Home=${INTERNAL_IP},${PUBLIC_IP}
+# 状态口默认 TCP 7000，随 Home 监听
+
+[RoutedMode]
+AcceptUnregisteredCalls=1
+H245PortRange=21000-21999
+
+[Proxy]
+RTPPortRange=30000-30999
+InternalNetwork=${INTERNAL_CIDR}
+IgnoreSignaledIPs=1
+AllowSignaledIPsFrom=${MGMT_NETS}
+# 只列真正可达的固定 IP；不要填全部私网段（10/8、172.16/12、192.168/16）
+AllowSignaledIPs=${RECORD_IP},${MCU_SIGNAL_IP},${GROUP_MCU_IPS}
+
+[RasSrv::RRQFeatures]
+SupportDynamicIP=1
+OverwriteEPOnSameAddress=1
+
+[GkStatus::Auth]
+rule=regex
+# 渲染时把 MGMT_NETS 转为正则；回环 127.0.0.1 始终放行
+regex=^(127\.0\.0\.1|${MGMT_REGEX})
+default=forbid
+Shutdown=forbid
+
+# 本地会议前缀路由（渲染时生成对应段，示例结构）：
+# [Routing::Prefix]
+# ${LOCAL_PREFIX} -> ${MCU_ALIAS}

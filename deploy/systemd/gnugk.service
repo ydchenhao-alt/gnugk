@@ -1,0 +1,12 @@
+[Unit]
+Description=GNU Gatekeeper
+After=network.target gnugk-routes.service
+Requires=gnugk-routes.service
+
+[Service]
+Type=simple
+ExecStart=/usr/local/bin/gnugk -c /etc/gnugk/gatekeeper.ini -o /var/log/gnugk.log -ttt
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target

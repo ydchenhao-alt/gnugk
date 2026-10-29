@@ -1,0 +1,10 @@
+#!/bin/sh
+# 双网口路由固化脚本（由 variables.env 渲染，oneshot 服务开机执行）
+# 顺序关键：本脚本先于 gnugk 启动。
+set -eu
+# 默认出口走公网口
+ip route replace default via "${PUBLIC_GW}" dev "${PUBLIC_IF}"
+# RFC1918 回程走内网口
+ip route replace 10.0.0.0/8 via "${INTERNAL_GW}" dev "${INTERNAL_IF}"
+ip route replace 172.16.0.0/12 via "${INTERNAL_GW}" dev "${INTERNAL_IF}"
+ip route replace 192.168.0.0/16 via "${INTERNAL_GW}" dev "${INTERNAL_IF}"

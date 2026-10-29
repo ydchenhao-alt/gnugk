@@ -1,0 +1,20 @@
+# nftables 模板（由 variables.env 渲染；INPUT 默认 DROP）
+# 管理口（22/7000/8090）只对 MGMT_NETS 开放；1718、T.120 默认不开放。
+# 容器无 NET_ADMIN 时，把同等 ACL 落到宿主/上级防火墙，不要在容器内静默失败。
+table inet filter {
+  chain input {
+    type filter hook input priority 0; policy drop;
+    iif "lo" accept
+    ct state established,related accept
+    # SSH / 状态口 / Web 管理台：仅管理网段
+    tcp dport 22 ip saddr { ${MGMT_NETS} } accept
+    tcp dport 7000 ip saddr { ${MGMT_NETS} } accept
+    tcp dport 8090 ip saddr { ${MGMT_NETS} } accept
+    udp dport 1719 accept
+    tcp dport 1720 accept
+    tcp dport 21000-21999 accept
+    udp dport 30000-30999 accept
+  }
+  chain output { type filter hook output priority 0; policy accept; }
+  chain forward { type filter hook forward priority 0; policy accept; }
+}
